@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sentiment Analyzer</title>
+    <!-- Tailwind CSS for modern, clean, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4 antialiased">
+
+    <div class="w-full max-w-xl bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur-md">
+        
+        <!-- Header -->
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                AI Sentiment Analyzer
+            </h1>
+            <p class="text-slate-400 mt-2 text-sm">
+                Enter any English text below to evaluate its emotional tone instantly
+            </p>
+        </div>
+
+        <!-- Form Section -->
+        <form method="POST" class="space-y-5">
+            <div>
+                <label for="text_to_analyze" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                    Text Input
+                </label>
+                <textarea 
+                    id="text_to_analyze"
+                    name="text_to_analyze" 
+                    rows="4"
+                    placeholder="Type or paste your text here..." 
+                    required
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none font-sans"
+                >{{ input_text }}</textarea>
+            </div>
+
+            <button 
+                type="submit"
+                class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-blue-500/20 active:scale-[0.99] transition-all duration-150 text-base"
+            >
+                Analyze Sentiment
+            </button>
+        </form>
+
+        <!-- Dynamic Results Display -->
+        {% if sentiment %}
+            <div class="mt-8 pt-6 border-t border-slate-700/60 dynamic-result-card animate-fade-in">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+                    Analysis Results
+                </h3>
+                
+                <div class="bg-slate-900/60 rounded-xl border border-slate-700/40 p-5 space-y-4">
+                    <!-- Input text quote -->
+                    <div class="text-slate-300 text-sm italic border-l-2 border-slate-600 pl-3 py-1 line-clamp-3">
+                        "{{ input_text }}"
+                    </div>
+                    
+                    <!-- Metrics grid -->
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+                            <span class="block text-xs text-slate-500 font-medium">Sentiment</span>
+                            {% if sentiment.label == 'Positive' %}
+                                <span class="text-lg font-bold text-emerald-400 tracking-wide flex items-center gap-1.5 mt-0.5">
+                                    😊 {{ sentiment.label }}
+                                </span>
+                            {% else %}
+                                <span class="text-lg font-bold text-rose-400 tracking-wide flex items-center gap-1.5 mt-0.5">
+                                    😔 {{ sentiment.label }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+                            <span class="block text-xs text-slate-500 font-medium">Confidence Score</span>
+                            <span class="text-lg font-bold text-blue-400 tracking-wide block mt-0.5">
+                                {{ sentiment.score }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
